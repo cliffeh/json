@@ -7,10 +7,8 @@
 // quietens compiler warnings
 int yylex(void);
 
-// TODO better error messages
 int yyerror(json_t **j, char *msg)
 {
-  // TODO do something with j?
   return fprintf(stderr, "%s\n", msg);
 }
 
