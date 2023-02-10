@@ -67,14 +67,6 @@ characters: CHARACTERS { $$ = strdup(yytext); };
 number: NUMBER { $$ = strdup(yytext); };
 
 %%
-int main() {
-  int r = yyparse();
-  // printf("main(): my type is: %i\n", yylval.type);
-  // json_t_pprint(&yylval);
-  // printf("\n");
-  return(r);
-}
-
 // TODO better error messages
 int yyerror(s)
 char *s;

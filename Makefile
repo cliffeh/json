@@ -1,6 +1,6 @@
 BINARIES=json
-OBJECTS=json.o parser.o scanner.o
-SOURCES=json.c json.h parser.y scanner.l
+OBJECTS=json.o main.o parser.o scanner.o
+SOURCES=json.c json.h main.c parser.y scanner.l
 GENERATED_SOURCES=parser.c scanner.c y.tab.h
 YFLAGS=-d -y
 # LFLAGS=--debug
@@ -9,11 +9,13 @@ YFLAGS=-d -y
 json: $(OBJECTS) ## build the json binary (default)
 	$(CC) $(CFLAGS) -o $@ $^
 
+json.o: json.c json.h
+
+main.o: main.c json.h
+
 parser.o: parser.c json.h
 
-scanner.o: scanner.c y.tab.h json.h
-
-json.o: json.c json.h
+scanner.o: scanner.c json.h y.tab.h
 
 scanner.c: scanner.l
 
