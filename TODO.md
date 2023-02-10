@@ -5,3 +5,5 @@
 * perf profiling
 * autotools?
 * warnings for things like duplicate object keys?
+* make yyparse reentrant
+* return the value to main() for printing (rather than printing in the parser)
