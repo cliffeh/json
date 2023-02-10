@@ -1,35 +1,41 @@
 # cliffeh/json
-an RFC 8259 compliant JSON parser
-...sort of
+an [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259) compliant JSON parser
 
 ## What is this?
 I stumbled across [JSONTestSuite](https://github.com/nst/JSONTestSuite) and figured "Hell, I think I can do that." ...and I (mostly) have. So, if you're interested in a JSON parser using good ol' lex/yacc/C with good JSONTestSuite test coverage, then read on.
 
 ## Building
 
-`make`
+    make
 
-It's on my [TODO](TODO.md) list to set up autotools for this - and I probably will once I have to start pulling in dependencies for things - but for now it's a straightforward `make`. You should also be able to do `make check` to run the test suite, and if you have valgrind installed `make valgrind` will run checks for memory leaks.
+It's on my [TODO](TODO.md) list to set up autotools for this - and I probably will once I have to start pulling in dependencies for things - but for now it's a straightforward `make`. (Tip: maybe also take a look at `make help`.)
 
 ## Running
 After you've built it, try this:
 
-`echo '["test", { "foo": "bar"}, false]' | ./json`
+    echo '["test", { "foo": "bar"}, false]' | ./json
 
 Feel free to pipe in your json of choice.
 
+## Testing
+A full suite of tests can be run by doing:
+
+    make check
+
+If you have valgrind installed and would like to test for memory leaks:
+
+    make valgrind
+
 ## Caveats
 Some of these are covered in the TODO, but IMHO I think the two that need called out:
+* String processing in a UTF-n world is a goddam nightmare, and I am almost *certain* there are bugs in the approach I've taken (test coverage notwithstanding). I tried the approach listed [here](https://www.w3.org/2005/03/23-lex-U). It's close...but the regexes as-provided don't quite meet all needs. I've also tested unicode processing using [every Unicode code point](https://github.com/bits/UTF-8-Unicode-Test-Documents). The test passed...but the file is huge so I'm not including it here. Feel free to give it a whirl if you're so inclined.
+* At time of writing this code doesn't do any interpretation of numeric values. Shoring this up is also on my [TODO](TODO.md) list.
 
-* String processing in a UTF-n world is a goddam nightmare, and I am almost *certain* there are bugs in the approach I've taken (test coverage notwithstanding). I tried this: https://www.w3.org/2005/03/23-lex-U. It's close...but the regexes as-provided don't quite meet all needs.
-* At time of writing this code doesn't do any interpretation of numeric values. Shoring this up is also on my TODO list.
-
-## Links
-
-Some links 
-
-* https://www.json.org/
-* https://github.com/nst/JSONTestSuite
-* https://gist.github.com/justjkk/436828/
-* https://www.w3.org/2005/03/23-lex-U
-* https://code.google.com/archive/p/json-test-suite/
+## References
+* [json.org](https://www.json.org/)
+* [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259)
+* [JSONTestSuite](https://github.com/nst/JSONTestSuite)
+* [Parsing JSON with lex and yacc](https://gist.github.com/justjkk/436828/)
+* [Adding utf-8 Encoding to Lex](https://www.w3.org/2005/03/23-lex-U)
+* [json-test-suite](https://code.google.com/archive/p/json-test-suite/)
+* [Every Unicode code point](https://github.com/bits/UTF-8-Unicode-Test-Documents)
