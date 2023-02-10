@@ -55,7 +55,7 @@
 <STRING>. {
   // TODO better error handling...
   fprintf(stderr, "error: illegal character sequence inside string\n");
-  exit(1);
+  return(YYerror);
 }
 
 [ \t\r\n] /* swallow whitespace */
@@ -65,7 +65,7 @@
 . {
   // TODO better error handling...
   fprintf(stderr, "error: unexpected character %c\n", *yytext);
-  exit(1);
+  return(YYerror);
 }
 
 %%
