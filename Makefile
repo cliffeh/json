@@ -6,7 +6,7 @@ YFLAGS=-d -y
 # LFLAGS=--debug
 # CFLAGS=-g
 
-json: $(OBJECTS)
+json: $(OBJECTS) ## build the json binary (default)
 	$(CC) $(CFLAGS) -o $@ $^
 
 parser.o: parser.c json.h
@@ -19,19 +19,25 @@ scanner.c: scanner.l
 
 parser.c y.tab.h: parser.y
 
-check: json
+check: json ## run the suite of unit tests
 	make -C test
 .PHONY: check
 
-valgrind:
+valgrind: ## run a set of memory leak checks (requires valgrind)
 	make -C test valgrind
 .PHONY: valgrind
 
-clean:
+clean: ## clean up generated object files
 	rm -f $(OBJECTS)
 	make -C test clean
 .PHONY: clean
 
-realclean: clean
+realclean: clean ## clean up all generated objects, source, binaries, logs, etc.
 	rm -f $(GENERATED_SOURCES) $(BINARIES)
 .PHONE: realclean
+
+help: ## show this help
+	@echo "\nSpecify a command. The choices are:\n"
+	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[0;36m%-12s\033[m %s\n", $$1, $$2}'
+	@echo ""
+.PHONY: help
