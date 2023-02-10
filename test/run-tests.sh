@@ -10,37 +10,43 @@ color_cyan="$(tput setaf 6)"
 color_reset="$(tput sgr0)"
 
 # accept files
-for file in $DIR/y_*.json; do
+for file in "$DIR"/y_*.json; do
   testname=$(basename "$file")
   ${CMD} <"$file" >"$file.out" 2>"$file.err"
   if [[ $? -eq 0 ]] ; then
-    echo "$testname: ${color_green}OK${color_reset}"
+    echo "test/$testname: ${color_green}OK${color_reset}"
   else
     failed_tests="$failed_tests $testname"
   fi
 done
 
 # reject files
-for file in $DIR/n_*.json; do
+for file in "$DIR"/n_*.json; do
   testname=$(basename "$file")
   ${CMD} <"$file" >"$file.out" 2>"$file.err"
   if [[ $? -eq 0 ]] ; then
     failed_tests="$failed_tests $testname"
   else
-    echo "$testname: ${color_green}OK${color_reset}"
+    echo "test/$testname: ${color_green}OK${color_reset}"
   fi
 done
 
-# # either-or files
-# for file in $DIR/i_*.json; do
-#   testname=$(basename "$file")
-#   ${CMD} <"$file" >"$file.out" 2>"$file.err"
-#   echo "$testname ${color_cyan}FAIR ($?)${color_reset}"
-# done
+if [[ $1 = "--all" ]] ; then
+  # either-or files
+  for file in "$DIR"/i_*.json; do
+    testname=$(basename "$file")
+    ${CMD} <"$file" >"$file.out" 2>"$file.err"
+    if [[ $? -eq 0 ]] ; then
+      echo "test/$testname: ${color_green}OK${color_reset}"
+    else
+      failed_tests="$failed_tests $testname"
+    fi
+  done
+fi
 
 # spit out all the failed tests at the bottom
-for test in $failed_tests ; do
-  echo "$test: ${color_red}FAIL${color_reset}"
+for testname in $failed_tests ; do
+  echo "test/$testname: ${color_red}FAIL${color_reset}"
 done
 
 if [[ -n $failed_tests ]] ; then
