@@ -61,10 +61,10 @@ string: '"' '"' { $$ = calloc(1, sizeof(char)); }
       | '"' characters '"' { $$ = $2; }
       ;
 
-characters: CHARACTERS { $$ = strdup(yytext); };
+characters: CHARACTERS { $$ = calloc(yylen+1, sizeof(char)); memcpy($$, yytext, yylen); };
 
 /* TODO keep tabs on whether or not there's a fraction and/or exponent? */
-number: NUMBER { $$ = strdup(yytext); };
+number: NUMBER { $$ = calloc(yylen+1, sizeof(char)); memcpy($$, yytext, yylen); };
 
 %%
 // TODO better error messages
