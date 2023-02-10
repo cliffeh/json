@@ -61,7 +61,7 @@ string: '"' '"' { $$ = calloc(1, sizeof(char)); }
       | '"' characters '"' { $$ = $2; }
       ;
 
-characters: CHARACTERS { $$ = strdup(yytext); }
+characters: CHARACTERS { $$ = strdup(yytext); };
 
 /* TODO keep tabs on whether or not there's a fraction and/or exponent? */
 number: NUMBER { $$ = strdup(yytext); };
