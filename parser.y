@@ -6,11 +6,18 @@
 
 // quietens compiler warnings
 int yylex(void);
-int yyerror(char* s);
+
+// TODO better error messages
+int yyerror(json_t **j, char *msg)
+{
+  // TODO do something with j?
+  return fprintf(stderr, "%s\n", msg);
+}
 
 extern char *yytext;
-
 %}
+
+%parse-param { json_t **j }
 
 %token TRU FALS NUL CHARACTERS NUMBER
 
@@ -28,7 +35,7 @@ extern char *yytext;
 
 %%
 
-json: element { json_t_pprint(stdout, $1); free_json_t($1); };
+json: element { if(j) { *j = $1; } };
 
 element: object { $$ = $1; }
        | array { $$ = $1; }
@@ -67,13 +74,6 @@ characters: CHARACTERS { $$ = calloc(yylen+1, sizeof(char)); memcpy($$, yytext, 
 number: NUMBER { $$ = calloc(yylen+1, sizeof(char)); memcpy($$, yytext, yylen); };
 
 %%
-// TODO better error messages
-int yyerror(s)
-char *s;
-{
-  return fprintf(stderr, "%s\n",s);
-}
-
 int yywrap()
 {
   return(1);
