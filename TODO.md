@@ -6,3 +6,4 @@
 * number interpretation (libgmp?)
 * autotools?
 * perf profiling
+* get gitignores for testing right
