@@ -24,7 +24,7 @@ A full suite of tests can be run by doing:
 
 If you have valgrind installed and would like to test for memory leaks:
 
-    make valgrind
+    make memcheck
 
 ## Caveats
 Some of these are covered in the TODO, but IMHO I think the two that need called out:

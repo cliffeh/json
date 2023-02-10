@@ -27,7 +27,7 @@ check: json ## run the suite of unit tests
 
 memcheck: json ## run a set of memory leak checks (requires valgrind)
 	test/run-memcheck.sh
-.PHONY: valgrind
+.PHONY: memcheck
 
 allcheck:  ## run the suite of unit tests including extra test cases
 	test/run-tests.sh --all
