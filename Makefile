@@ -35,6 +35,10 @@ realclean: clean ## clean up all generated objects, source, binaries, logs, etc.
 	rm -f $(GENERATED_SOURCES) $(BINARIES)
 .PHONE: realclean
 
+format: .clang-format ## format C sources and headers (requires clang-format)
+	clang-format -i *.c *.h
+.PHONY: format
+
 help: ## show this help
 	@echo "\nSpecify a command. The choices are:\n"
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[0;36m%-12s\033[m %s\n", $$1, $$2}'
