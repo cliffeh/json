@@ -1,3 +1,16 @@
+# generated binaries
+json
+
+# generated sources
+parser.c
+scanner.c
+y.tab.h
+
+# testing logs
+test/*.log
+test/*.err
+test/*.out
+
 # Prerequisites
 *.d
 
