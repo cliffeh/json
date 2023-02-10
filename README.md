@@ -21,8 +21,8 @@ Feel free to pipe in your json of choice.
 ## Caveats
 Some of these are covered in the TODO, but IMHO I think the two that need called out:
 
-* String processing in a UTF-n world is a goddam nightmare, and I am almost *certain* there are bugs in the approach I've taken (test coverage notwithstanding).
-* At time of writing this code doesn't do any interpretation of numeric values.
+* String processing in a UTF-n world is a goddam nightmare, and I am almost *certain* there are bugs in the approach I've taken (test coverage notwithstanding). I tried this: https://www.w3.org/2005/03/23-lex-U. It's close...but the regexes as-provided don't quite meet all needs.
+* At time of writing this code doesn't do any interpretation of numeric values. Shoring this up is also on my TODO list.
 
 ## Links
 
@@ -31,3 +31,4 @@ Some links
 * https://www.json.org/
 * https://github.com/nst/JSONTestSuite
 * https://gist.github.com/justjkk/436828/
+* https://www.w3.org/2005/03/23-lex-U
