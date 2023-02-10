@@ -20,16 +20,15 @@ scanner.c: scanner.l
 parser.c y.tab.h: parser.y
 
 check: json ## run the suite of unit tests
-	make -C test
+	test/run-tests.sh
 .PHONY: check
 
-valgrind: ## run a set of memory leak checks (requires valgrind)
-	make -C test valgrind
+memcheck: json ## run a set of memory leak checks (requires valgrind)
+	test/run-memcheck.sh
 .PHONY: valgrind
 
 clean: ## clean up generated object files
-	rm -f $(OBJECTS)
-	make -C test clean
+	rm -f $(OBJECTS) test/*.log test/*.out test/*.err
 .PHONY: clean
 
 realclean: clean ## clean up all generated objects, source, binaries, logs, etc.
