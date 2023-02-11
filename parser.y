@@ -13,6 +13,7 @@ int yyerror(json_t **j, char *msg)
 }
 
 extern char *yytext;
+extern int yyleng;
 %}
 
 %parse-param { json_t **j }
@@ -66,10 +67,10 @@ string: '"' '"' { $$ = calloc(1, sizeof(char)); }
       | '"' characters '"' { $$ = $2; }
       ;
 
-characters: CHARACTERS { $$ = calloc(yylen+1, sizeof(char)); memcpy($$, yytext, yylen); };
+characters: CHARACTERS { $$ = calloc(yyleng+1, sizeof(char)); memcpy($$, yytext, yyleng); };
 
 /* TODO keep tabs on whether or not there's a fraction and/or exponent? */
-number: NUMBER { $$ = calloc(yylen+1, sizeof(char)); memcpy($$, yytext, yylen); };
+number: NUMBER { $$ = calloc(yyleng+1, sizeof(char)); memcpy($$, yytext, yyleng); };
 
 %%
 int yywrap()
