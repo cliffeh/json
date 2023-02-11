@@ -1,70 +1,69 @@
 #include "json.h"
 #include <stdlib.h>
 
-void
-json_t_pprint (FILE *out, json_t *j, int depth, int flags)
+int
+json_t_print (FILE *out, const json_t *j, int depth, int flags)
 {
   switch (j->type)
     {
     case JSON_T_NULL:
       {
-        fprintf (out, "null");
-        return;
+        return fprintf (out, "null");
       }
     case JSON_T_BOOL:
       {
-        fprintf (out, "%s", j->ival == 0 ? "false" : "true");
-        return;
+        return fprintf (out, "%s", j->ival == 0 ? "false" : "true");
       }
     case JSON_T_STRING:
       {
-        fprintf (out, "\"%s\"", j->strval);
-        return;
+        return fprintf (out, "\"%s\"", j->strval);
       }
     case JSON_T_NUMBER:
       {
-        fprintf (out, "%s", j->strval);
-        return;
+        return fprintf (out, "%s", j->strval);
       }
     case JSON_T_ARRAY:
       {
-        fprintf (out, "[");
+        int r = 0;
+        r += fprintf (out, "[");
         if (j->len > 0)
           {
             json_t_list *l = j->lval;
-            json_t_pprint (out, l->value, depth + 1, flags);
+            r += json_t_print (out, l->value, depth + 1, flags);
             l = l->tail;
             while (l)
               {
-                fprintf (out, ",");
-                json_t_pprint (out, l->value, depth + 1, flags);
+                r += fprintf (out, ",");
+                r += json_t_print (out, l->value, depth + 1, flags);
                 l = l->tail;
               }
           }
-        fprintf (out, "]");
-        return;
+        return r + fprintf (out, "]");
       }
     case JSON_T_OBJECT:
       {
-        fprintf (out, "{");
+        int r = 0;
+        r = fprintf (out, "{");
         if (j->len > 0)
           {
             json_t_list *l = j->lval;
-            fprintf (out, "\"%s\":", l->key);
-            json_t_pprint (out, l->value, depth + 1, flags);
+            r += fprintf (out, "\"%s\":", l->key);
+            r += json_t_print (out, l->value, depth + 1, flags);
             l = l->tail;
             while (l)
               {
-                fprintf (out, ",");
-                fprintf (out, "\"%s\":", l->key);
-                json_t_pprint (out, l->value, depth + 1, flags);
+                r += fprintf (out, ",");
+                r += fprintf (out, "\"%s\":", l->key);
+                r += json_t_print (out, l->value, depth + 1, flags);
                 l = l->tail;
               }
           }
-        printf ("}");
-        return;
+        return r + fprintf (out, "}");
       }
-      // TODO add a default?
+      default: {
+        fprintf(stderr, "I don't know how to print this!\n");
+        return 0;
+      }
     }
 }
 
