@@ -1,5 +1,4 @@
 * CLI args
-* pretty-printing (line breaks, indentation, etc)
 * number interpretation (libgmp?)
   * make sure test cases still test that the numbers are right
 * perf profiling
@@ -8,3 +7,4 @@
 * make yyparse reentrant
 * return the value to main() for printing (rather than printing in the parser)
 * better error handling/messages
+* output correctness checks?
