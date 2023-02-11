@@ -20,6 +20,8 @@ main (int argc, const char *argv[])
             POPT_ARG_INT | POPT_ARGFLAG_OPTIONAL | POPT_ARGFLAG_SHOW_DEFAULT,
             &print_options.indent, 0,
             "indent N spaces/tabs; 0 implies compact formatting", "N" },
+          { "use-tabs", 't', POPT_ARG_NONE, &print_options.use_tabs, 0,
+            "use tabs for indentation", 0 },
           POPT_AUTOHELP POPT_TABLEEND
         };
 
