@@ -7,9 +7,9 @@ scanner.c
 y.tab.h
 
 # testing logs
-test/*.log
-test/*.err
-test/*.out
+test/data/*.log
+test/data/*.err
+test/data/*.out
 
 # Prerequisites
 *.d

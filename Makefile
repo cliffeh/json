@@ -23,7 +23,7 @@ allcheck:  ## run the suite of unit tests including extra test cases
 .PHONY:allcheck
 
 clean: ## clean up generated object files
-	rm -f $(OBJECTS) test/*.log test/*.out test/*.err
+	rm -f $(OBJECTS) test/data/*.log test/data/*.out test/data/*.err
 .PHONY: clean
 
 realclean: clean ## clean up all generated objects, source, binaries, logs, etc.
