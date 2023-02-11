@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void
-json_t_pprint (FILE *out, json_t *j)
+json_t_pprint (FILE *out, json_t *j, int depth, int flags)
 {
   switch (j->type)
     {
@@ -32,12 +32,12 @@ json_t_pprint (FILE *out, json_t *j)
         if (j->len > 0)
           {
             json_t_list *l = j->lval;
-            json_t_pprint (out, l->value);
+            json_t_pprint (out, l->value, depth + 1, flags);
             l = l->tail;
             while (l)
               {
                 fprintf (out, ",");
-                json_t_pprint (out, l->value);
+                json_t_pprint (out, l->value, depth + 1, flags);
                 l = l->tail;
               }
           }
@@ -51,13 +51,13 @@ json_t_pprint (FILE *out, json_t *j)
           {
             json_t_list *l = j->lval;
             fprintf (out, "\"%s\":", l->key);
-            json_t_pprint (out, l->value);
+            json_t_pprint (out, l->value, depth + 1, flags);
             l = l->tail;
             while (l)
               {
                 fprintf (out, ",");
                 fprintf (out, "\"%s\":", l->key);
-                json_t_pprint (out, l->value);
+                json_t_pprint (out, l->value, depth + 1, flags);
                 l = l->tail;
               }
           }

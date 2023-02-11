@@ -11,7 +11,7 @@ main (int argc, char *argv[])
   rc = yyparse (&j);
   if (rc == 0)
     {
-      json_t_pprint (stdout, j);
+      json_t_pprint (stdout, j, 0, 0);
       free_json_t(j);
     }
   return (rc);

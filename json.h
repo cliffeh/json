@@ -29,7 +29,7 @@ typedef struct json_t_list
   struct json_t_list *tail;
 } json_t_list;
 
-void json_t_pprint (FILE *out, json_t *j);
+void json_t_pprint (FILE *out, json_t *j, int depth, int flags);
 json_t *new_json_t (int type);
 void free_json_t (json_t *j);
 
