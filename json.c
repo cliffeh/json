@@ -1,8 +1,8 @@
 #include "json.h"
 #include <stdlib.h>
 
-int
-json_t_print (FILE *out, const json_t *j, int depth, int flags)
+static int
+__json_t_print (FILE *out, const json_t *j, int depth, const char *indentstr)
 {
   switch (j->type)
     {
@@ -29,12 +29,12 @@ json_t_print (FILE *out, const json_t *j, int depth, int flags)
         if (j->len > 0)
           {
             json_t_list *l = j->lval;
-            r += json_t_print (out, l->value, depth + 1, flags);
+            r += __json_t_print (out, l->value, depth + 1, indentstr);
             l = l->tail;
             while (l)
               {
                 r += fprintf (out, ",");
-                r += json_t_print (out, l->value, depth + 1, flags);
+                r += __json_t_print (out, l->value, depth + 1, indentstr);
                 l = l->tail;
               }
           }
@@ -48,23 +48,58 @@ json_t_print (FILE *out, const json_t *j, int depth, int flags)
           {
             json_t_list *l = j->lval;
             r += fprintf (out, "\"%s\":", l->key);
-            r += json_t_print (out, l->value, depth + 1, flags);
+            r += __json_t_print (out, l->value, depth + 1, indentstr);
             l = l->tail;
             while (l)
               {
                 r += fprintf (out, ",");
                 r += fprintf (out, "\"%s\":", l->key);
-                r += json_t_print (out, l->value, depth + 1, flags);
+                r += __json_t_print (out, l->value, depth + 1, indentstr);
                 l = l->tail;
               }
           }
         return r + fprintf (out, "}");
       }
-      default: {
-        fprintf(stderr, "I don't know how to print this!\n");
+    default:
+      {
+        fprintf (stderr, "I don't know how to print this!\n");
         return 0;
       }
     }
+}
+
+int
+json_t_print (const json_t *j, const json_t_print_options *opt)
+{
+  FILE *out = DEFAULT_JSON_T_PRINT_OUTFILE;
+  int indent = DEFAULT_JSON_T_PRINT_INDENT, use_tabs = 0, rc;
+  char *indentstr = 0;
+
+  if (opt)
+    {
+      out = opt->out;
+      indent = opt->indent;
+      use_tabs = opt->use_tabs;
+    }
+
+  if (indent)
+    {
+      indentstr = calloc (indent, sizeof (char));
+      char c = use_tabs ? '\t' : ' ';
+      for (int i = 0; i < indent; i++)
+        {
+          indentstr[i] = c;
+        }
+    }
+
+  rc = __json_t_print (out, j, 0, indentstr);
+
+  if (indent)
+    {
+      rc += printf ("\n");
+    }
+
+  return rc;
 }
 
 json_t *

@@ -3,11 +3,12 @@ OBJECTS=json.o main.o parser.o scanner.o
 SOURCES=json.c json.h main.c parser.y scanner.l
 GENERATED_SOURCES=parser.c scanner.c y.tab.h
 YFLAGS=-d -y
+LDFLAGS=-lpopt
 # LFLAGS=--debug
 # CFLAGS=-g
 
 json: $(OBJECTS) ## build the json binary (default)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 check: json ## run the suite of unit tests
 	test/run-tests.sh

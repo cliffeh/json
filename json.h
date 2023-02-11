@@ -11,16 +11,6 @@
 #define JSON_T_ARRAY 4
 #define JSON_T_OBJECT 5
 
-// print flags
-// most significant 5 bits reserved for indent level (max 31 spaces/tabs)
-#define JSON_T_PRINT_INDENT (1 << 1)   // default: no indent
-#define JSON_T_PRINT_USE_TABS (1 << 2) // default: spaces
-// TODO colorize?
-
-// default indent: 2 spaces
-#define JSON_T_PRINT_DEFAULT_INDENT (2 << 26)
-#define JSON_T_PRINT_MAX_INDENT 31
-
 typedef struct json_t
 {
   int type, len;
@@ -40,7 +30,16 @@ typedef struct json_t_list
   struct json_t_list *tail;
 } json_t_list;
 
-int json_t_print (FILE *out, const json_t *j, int depth, int flags);
+#define DEFAULT_JSON_T_PRINT_OUTFILE stdout
+#define DEFAULT_JSON_T_PRINT_INDENT 2
+
+typedef struct json_t_print_options
+{
+  FILE *out;
+  int indent, use_tabs;
+} json_t_print_options;
+
+int json_t_print (const json_t *j, const json_t_print_options *opt);
 json_t *new_json_t (int type);
 void free_json_t (json_t *j);
 
