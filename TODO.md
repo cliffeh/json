@@ -7,4 +7,4 @@
 * make yyparse reentrant
 * return the value to main() for printing (rather than printing in the parser)
 * better error handling/messages
-* output correctness checks?
+* pretty-printing correctness checks?
