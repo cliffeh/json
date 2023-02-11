@@ -1,48 +1,88 @@
 #include "json.h"
 #include <stdlib.h>
 
+#define PRINT_SPACES                                                          \
+  do                                                                          \
+    {                                                                         \
+      if (*indentstr)                                                         \
+        {                                                                     \
+          for (int i = 0; i < depth; i++)                                     \
+            {                                                                 \
+              r += printf ("%s", indentstr);                                  \
+            }                                                                 \
+        }                                                                     \
+    }                                                                         \
+  while (0)
+
 static int
 __json_t_print (FILE *out, const json_t *j, int depth, const char *indentstr)
 {
+  int r = 0;
   switch (j->type)
     {
     case JSON_T_NULL:
       {
-        return fprintf (out, "null");
+        PRINT_SPACES;
+        r += fprintf (out, "null");
+        if (!depth)
+          r += fprintf (out, "\n");
+        return r;
       }
     case JSON_T_BOOL:
       {
-        return fprintf (out, "%s", j->ival == 0 ? "false" : "true");
+        PRINT_SPACES;
+        r + fprintf (out, "%s", j->ival == 0 ? "false" : "true");
+        if (!depth)
+          r += fprintf (out, "\n");
+        return r;
       }
     case JSON_T_STRING:
       {
-        return fprintf (out, "\"%s\"", j->strval);
+        PRINT_SPACES;
+        r + fprintf (out, "\"%s\"", j->strval);
+        if (!depth)
+          r += fprintf (out, "\n");
+        return r;
       }
     case JSON_T_NUMBER:
       {
-        return fprintf (out, "%s", j->strval);
+        PRINT_SPACES;
+        r + fprintf (out, "%s", j->strval);
+        if (!depth)
+          r += fprintf (out, "\n");
+        return r;
       }
     case JSON_T_ARRAY:
       {
-        int r = 0;
+        PRINT_SPACES;
         r += fprintf (out, "[");
         if (j->len > 0)
           {
+            if (*indentstr)
+              r += fprintf (stdout, "\n");
             json_t_list *l = j->lval;
             r += __json_t_print (out, l->value, depth + 1, indentstr);
             l = l->tail;
             while (l)
               {
                 r += fprintf (out, ",");
+                if (*indentstr)
+                  r += fprintf (stdout, "\n");
                 r += __json_t_print (out, l->value, depth + 1, indentstr);
                 l = l->tail;
               }
+            if (*indentstr)
+              r += fprintf (stdout, "\n");
+            PRINT_SPACES;
           }
-        return r + fprintf (out, "]");
+
+        r += fprintf (out, "]");
+        if (!depth)
+          r += fprintf (out, "\n");
+        return r;
       }
     case JSON_T_OBJECT:
       {
-        int r = 0;
         r = fprintf (out, "{");
         if (j->len > 0)
           {
@@ -73,7 +113,6 @@ json_t_print (const json_t *j, const json_t_print_options *opt)
 {
   FILE *out = DEFAULT_JSON_T_PRINT_OUTFILE;
   int indent = DEFAULT_JSON_T_PRINT_INDENT, use_tabs = 0, rc;
-  char *indentstr = 0;
 
   if (opt)
     {
@@ -82,9 +121,11 @@ json_t_print (const json_t *j, const json_t_print_options *opt)
       use_tabs = opt->use_tabs;
     }
 
+  char indentstr[indent + 1];
+  indentstr[0] = 0;
+
   if (indent)
     {
-      indentstr = calloc (indent, sizeof (char));
       char c = use_tabs ? '\t' : ' ';
       for (int i = 0; i < indent; i++)
         {
@@ -93,11 +134,6 @@ json_t_print (const json_t *j, const json_t_print_options *opt)
     }
 
   rc = __json_t_print (out, j, 0, indentstr);
-
-  if (indent)
-    {
-      rc += printf ("\n");
-    }
 
   return rc;
 }
