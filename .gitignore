@@ -10,6 +10,7 @@ y.tab.h
 test/data/*.log
 test/data/*.err
 test/data/*.out
+test/data/*.diff
 
 # Prerequisites
 *.d

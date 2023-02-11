@@ -2,7 +2,7 @@
 
 DIR=$(dirname "$0")
 DATADIR="$DIR/data"
-CMD="$DIR/../json"  
+CMD="$DIR/../json -I0"
 failed_tests=""
 
 color_red="$(tput setaf 1)"
@@ -14,9 +14,14 @@ color_reset="$(tput sgr0)"
 for file in "$DATADIR"/y_*.json; do
   ${CMD} <"$file" >"$file.out" 2>"$file.err"
   if [[ $? -eq 0 ]] ; then
-    echo "$file: ${color_green}OK${color_reset}"
+    echo "ACCEPT:$file: ${color_green}OK${color_reset}"
+    # also test for correct output
+    diff -w "$file" "$file.out" > "$file.diff"
+    if [[ $? -eq 0 ]] ; then
+      failed_tests="$failed_tests DIFF:$file-diff"
+    fi
   else
-    failed_tests="$failed_tests $file"
+    failed_tests="$failed_tests ACCEPT:$file"
   fi
 done
 
@@ -24,9 +29,9 @@ done
 for file in "$DATADIR"/n_*.json; do
   ${CMD} <"$file" >"$file.out" 2>"$file.err"
   if [[ $? -eq 0 ]] ; then
-    failed_tests="$failed_tests $file"
+    failed_tests="$failed_tests REJECT:$file"
   else
-    echo "$file: ${color_green}OK${color_reset}"
+    echo "REJECT:$file: ${color_green}OK${color_reset}"
   fi
 done
 
@@ -35,9 +40,9 @@ if [[ $1 = "--all" ]] ; then
   for file in "$DATADIR"/i_*.json; do
     ${CMD} <"$file" >"$file.out" 2>"$file.err"
     if [[ $? -eq 0 ]] ; then
-      echo "$file: ${color_green}OK${color_reset}"
+      echo "EITHER:$file: ${color_green}OK${color_reset}"
     else
-      failed_tests="$failed_tests $file"
+      failed_tests="$failed_tests EITHER:$file"
     fi
   done
 fi
