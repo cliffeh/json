@@ -16,9 +16,9 @@ for file in "$DATADIR"/y_*.json; do
   if [[ $? -eq 0 ]] ; then
     echo "ACCEPT:$file: ${color_green}OK${color_reset}"
     # also test for correct output
-    diff -w "$file" "$file.out" > "$file.diff"
-    if [[ $? -eq 0 ]] ; then
-      failed_tests="$failed_tests DIFF:$file-diff"
+    tr -d '\n' < "$file" | diff -w "$file.out" - > "$file.diff"
+    if [[ $? -ne 0 ]] ; then
+      failed_tests="$failed_tests DIFF:$file"
     fi
   else
     failed_tests="$failed_tests ACCEPT:$file"
