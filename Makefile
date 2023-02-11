@@ -1,6 +1,8 @@
 BINARIES=json
 OBJECTS=json.o main.o parser.o scanner.o
-SOURCES=json.c json.h main.c parser.y scanner.l
+CSOURCES=json.c json.h main.c
+YYSOURCES=parser.y scanner.l
+SOURCES=$(CSOURCES) $(YYSOURCES)
 GENERATED_SOURCES=parser.c scanner.c y.tab.h
 YFLAGS=-d -y
 LDFLAGS=-lpopt
@@ -31,7 +33,7 @@ realclean: clean ## clean up all generated objects, source, binaries, logs, etc.
 .PHONY: realclean
 
 format: .clang-format ## format C sources and headers (requires clang-format)
-	clang-format -i *.c *.h
+	clang-format -i $(CSOURCES)
 .PHONY: format
 
 help: ## show this help
