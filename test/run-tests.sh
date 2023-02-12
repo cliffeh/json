@@ -38,7 +38,7 @@ done
 # jq files (pretty-print tests)
 for file in "$DATADIR"/jq_*.json; do
   ${CMD} -i2 <"$file" >"$file.out" 2>"$file.err"
-  diff "$file" "$file.out" >& "$file.diff.err"
+  diff "$file" "$file.out" >&"$file.diff.err"
   if [[ $? -ne 0 ]]; then
     failed_tests="$failed_tests PRETTY:$file"
   else
@@ -49,7 +49,7 @@ done
 # python mjson.tool files (pretty-print tests)
 for file in "$DATADIR"/mjson.tool_*.json; do
   ${CMD} -i4 <"$file" >"$file.out" 2>"$file.err"
-  diff "$file" "$file.out" >& "$file.diff.err"
+  diff "$file" "$file.out" >&"$file.diff.err"
   if [[ $? -ne 0 ]]; then
     failed_tests="$failed_tests PRETTY:$file"
   else
