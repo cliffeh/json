@@ -11,7 +11,7 @@ color_reset="$(tput sgr0)"
 
 # accept files
 for file in "$DATADIR"/y_*.json; do
-  ${CMD} -I0 <"$file" >"$file.out" 2>"$file.err"
+  ${CMD} -i0 <"$file" >"$file.out" 2>"$file.err"
   if [[ $? -eq 0 ]]; then
     echo "ACCEPT:$file: ${color_green}OK${color_reset}"
 
@@ -37,7 +37,7 @@ done
 
 # jq files (pretty-print tests)
 for file in "$DATADIR"/jq_*.json; do
-  ${CMD} -I2 <"$file" >"$file.out" 2>"$file.err"
+  ${CMD} -i2 <"$file" >"$file.out" 2>"$file.err"
   diff "$file" "$file.out" >& "$file.diff.err"
   if [[ $? -ne 0 ]]; then
     failed_tests="$failed_tests PRETTY:$file"
@@ -48,7 +48,7 @@ done
 
 # python mjson.tool files (pretty-print tests)
 for file in "$DATADIR"/mjson.tool_*.json; do
-  ${CMD} -I4 <"$file" >"$file.out" 2>"$file.err"
+  ${CMD} -i4 <"$file" >"$file.out" 2>"$file.err"
   diff "$file" "$file.out" >& "$file.diff.err"
   if [[ $? -ne 0 ]]; then
     failed_tests="$failed_tests PRETTY:$file"
