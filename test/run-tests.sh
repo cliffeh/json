@@ -37,8 +37,19 @@ done
 
 # jq files (pretty-print tests)
 for file in "$DATADIR"/jq_*.json; do
-  ${CMD} -I2 <"$file" >"$file.pretty" 2>"$file.err"
-  diff "$file" "$file.pretty" >& "$file.pretty.err"
+  ${CMD} -I2 <"$file" >"$file.out" 2>"$file.err"
+  diff "$file" "$file.out" >& "$file.diff.err"
+  if [[ $? -ne 0 ]]; then
+    failed_tests="$failed_tests PRETTY:$file"
+  else
+    echo "PRETTY:$file: ${color_green}OK${color_reset}"
+  fi
+done
+
+# python mjson.tool files (pretty-print tests)
+for file in "$DATADIR"/mjson.tool_*.json; do
+  ${CMD} -I4 <"$file" >"$file.out" 2>"$file.err"
+  diff "$file" "$file.out" >& "$file.diff.err"
   if [[ $? -ne 0 ]]; then
     failed_tests="$failed_tests PRETTY:$file"
   else
