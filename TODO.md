@@ -6,3 +6,5 @@
 * make yyparse reentrant
 * better error handling/messages
 * enable running tests separately (e.g., accept vs reject vs pretty)
+* `make package` Makefile target
+  * generate a library (libjson?)
