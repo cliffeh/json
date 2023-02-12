@@ -7,7 +7,6 @@ failed_tests=""
 
 color_red="$(tput setaf 1)"
 color_green="$(tput setaf 2)"
-color_cyan="$(tput setaf 6)"
 color_reset="$(tput sgr0)"
 
 # accept files
@@ -24,16 +23,6 @@ for file in "$DATADIR"/y_*.json; do
   else
     failed_tests="$failed_tests ACCEPT:$file"
   fi
-
-  # TODO test that the pretty-printing did the correct "prettiness"?
-  # test for correct output with pretty-printing
-  ${CMD} -I0 <"$file" | tr -d '\n' >"$file.pretty" 2>/dev/null
-  tr -d '\n' <"$file" | diff -w "$file.pretty" - >"$file.diff"
-  if [[ $? -ne 0 ]]; then
-    failed_tests="$failed_tests PRETTY:$file"
-  else
-    echo "PRETTY:$file: ${color_green}OK${color_reset}"
-  fi
 done
 
 # reject files
@@ -43,6 +32,17 @@ for file in "$DATADIR"/n_*.json; do
     failed_tests="$failed_tests REJECT:$file"
   else
     echo "REJECT:$file: ${color_green}OK${color_reset}"
+  fi
+done
+
+# jq files (pretty-print tests)
+for file in "$DATADIR"/jq_*.json; do
+  ${CMD} -I2 <"$file" >"$file.pretty" 2>"$file.err"
+  diff "$file" "$file.pretty" >& "$file.pretty.err"
+  if [[ $? -ne 0 ]]; then
+    failed_tests="$failed_tests PRETTY:$file"
+  else
+    echo "PRETTY:$file: ${color_green}OK${color_reset}"
   fi
 done
 

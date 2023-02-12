@@ -30,8 +30,7 @@ If you have valgrind installed and would like to test for memory leaks:
 
     make memcheck
 
-## Caveats
-Some of these are covered in the TODO, but IMHO I think the two that need called out:
+## Caveats/Errata
 * String processing in a UTF-n world is a goddam nightmare, and I am almost *certain* there are bugs in the approach I've taken (test coverage notwithstanding). I tried the approach listed [here](https://www.w3.org/2005/03/23-lex-U). It's close...but the regexes as-provided don't quite meet all needs. I've also tested unicode processing using [every Unicode code point](https://github.com/bits/UTF-8-Unicode-Test-Documents). The test passed...but the file is huge so I'm not including it here. Feel free to give it a whirl if you're so inclined.
 * At time of writing this code doesn't do any interpretation of numeric values. Shoring this up is also on my [TODO](TODO.md) list.
 
