@@ -52,6 +52,8 @@ __json_t_list_print (FILE *out, const json_t_list *l, int depth, int indent,
         }
       curr = curr->tail;
     }
+
+    return r;
 }
 
 static int
@@ -68,17 +70,17 @@ __json_t_print (FILE *out, const json_t *j, int depth, int indent,
       }
     case JSON_T_BOOL:
       {
-        r + fprintf (out, "%s", j->ival == 0 ? "false" : "true");
+        r += fprintf (out, "%s", j->ival == 0 ? "false" : "true");
         return r;
       }
     case JSON_T_STRING:
       {
-        r + fprintf (out, "\"%s\"", j->strval);
+        r += fprintf (out, "\"%s\"", j->strval);
         return r;
       }
     case JSON_T_NUMBER:
       {
-        r + fprintf (out, "%s", j->strval);
+        r += fprintf (out, "%s", j->strval);
         return r;
       }
     case JSON_T_ARRAY:
