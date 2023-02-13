@@ -11,13 +11,11 @@ color_reset="$(tput sgr0)"
 
 # accept files
 for file in "$DATADIR"/y_*.json; do
-  ${CMD} -n0 <"$file" >"$file.out" 2>"$file.err"
-  if [[ $? -eq 0 ]]; then
+  if ${CMD} -n0 <"$file" >"$file.out" 2>"$file.err"; then
     echo "ACCEPT:$file: ${color_green}OK${color_reset}"
 
     # test for correct output
-    tr -d '\n' <"$file" | diff -w "$file.out" - >"$file.diff"
-    if [[ $? -ne 0 ]]; then
+    if ! tr -d '\n' <"$file" | diff -w "$file.out" - >"$file.diff"; then
       failed_tests="$failed_tests DIFF:$file"
     fi
   else
@@ -27,8 +25,7 @@ done
 
 # reject files
 for file in "$DATADIR"/n_*.json; do
-  ${CMD} <"$file" >"$file.out" 2>"$file.err"
-  if [[ $? -eq 0 ]]; then
+  if ${CMD} <"$file" >"$file.out" 2>"$file.err"; then
     failed_tests="$failed_tests REJECT:$file"
   else
     echo "REJECT:$file: ${color_green}OK${color_reset}"
@@ -38,8 +35,7 @@ done
 # jq files (pretty-print tests)
 for file in "$DATADIR"/jq_*.json; do
   ${CMD} -n2 <"$file" >"$file.out" 2>"$file.err"
-  diff "$file" "$file.out" >&"$file.diff.err"
-  if [[ $? -ne 0 ]]; then
+  if ! diff "$file" "$file.out" >&"$file.diff.err"; then
     failed_tests="$failed_tests PRETTY:$file"
   else
     echo "PRETTY:$file: ${color_green}OK${color_reset}"
@@ -49,8 +45,7 @@ done
 # python mjson.tool files (pretty-print tests)
 for file in "$DATADIR"/mjson.tool_*.json; do
   ${CMD} -n4 <"$file" >"$file.out" 2>"$file.err"
-  diff "$file" "$file.out" >&"$file.diff.err"
-  if [[ $? -ne 0 ]]; then
+  if ! diff "$file" "$file.out" >&"$file.diff.err"; then
     failed_tests="$failed_tests PRETTY:$file"
   else
     echo "PRETTY:$file: ${color_green}OK${color_reset}"
@@ -60,8 +55,7 @@ done
 if [[ $1 = "--all" ]]; then
   # either-or files
   for file in "$DATADIR"/i_*.json; do
-    ${CMD} <"$file" >"$file.out" 2>"$file.err"
-    if [[ $? -eq 0 ]]; then
+    if ! ${CMD} <"$file" >"$file.out" 2>"$file.err"; then
       echo "EITHER:$file: ${color_green}OK${color_reset}"
     else
       failed_tests="$failed_tests EITHER:$file"
@@ -70,8 +64,8 @@ if [[ $1 = "--all" ]]; then
 fi
 
 # spit out all the failed tests at the bottom
-for file in $failed_tests; do
-  echo "$file: ${color_red}FAIL${color_reset}"
+for test in $failed_tests; do
+  echo "$test: ${color_red}FAIL${color_reset}"
 done
 
 if [[ -n $failed_tests ]]; then
