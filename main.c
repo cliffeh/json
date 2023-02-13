@@ -16,7 +16,7 @@ main (int argc, const char *argv[])
 
   struct poptOption options[]
       = { /* longName, shortName, argInfo, arg, val, descrip, argDescript */
-          { "indent", 'i',
+          { "indent", 'n',
             POPT_ARG_INT | POPT_ARGFLAG_OPTIONAL | POPT_ARGFLAG_SHOW_DEFAULT,
             &print_options.indent, 0,
             "indent N spaces/tabs; 0 implies compact formatting", "N" },
