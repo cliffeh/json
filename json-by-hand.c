@@ -41,6 +41,7 @@ parseJson (FILE *in)
   // TODO BOM leading bytes?
   unsigned char la = eat_whitespace (in);
   return parseElement (in, la);
+  // TODO what about garbage afterward?
 }
 
 static json_t *
@@ -171,7 +172,7 @@ parseString (FILE *in)
         {
         case '"':
           {
-            buf = realloc (buf, pos + 1);
+            // buf = realloc (buf, pos + 1);
             buf[pos] = 0;
             return buf;
           }
@@ -240,6 +241,10 @@ parseString (FILE *in)
               if (la >= '\x20') // TODO is this actually correct?
                 {
                   buf[pos++] = la;
+                } else {
+                    fprintf(stderr, "illegal character in string\n");
+                    free(buf);
+                    return 0;
                 }
             }
           }
@@ -251,5 +256,9 @@ parseString (FILE *in)
 static char *
 parseNumber (FILE *in, unsigned char la)
 {
+  int size = BUFSIZ, pos = 0;
+  char *buf = malloc (size);
 
+    // TODO implement
+    return 0;
 }
