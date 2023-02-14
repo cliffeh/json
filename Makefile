@@ -58,3 +58,6 @@ parser.o: parser.c json.h
 scanner.c: scanner.l
 
 scanner.o: scanner.c json.h y.tab.h
+
+gentables: gentables.c
+	$(CC) -o $@ $^
