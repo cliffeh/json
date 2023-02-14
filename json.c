@@ -57,7 +57,7 @@ __json_t_list_print (FILE *out, const json_t_list *l, int depth, int indent,
       curr = curr->tail;
     }
 
-    return r;
+  return r;
 }
 
 static int
@@ -201,7 +201,6 @@ free_json_t (json_t *j)
   free (j);
 }
 
-
 static unsigned char
 eat_whitespace (FILE *in)
 {
@@ -210,7 +209,6 @@ eat_whitespace (FILE *in)
     {
       switch (c = fgetc (in))
         {
-
         case ' ':
         case '\t':
         case '\r':
@@ -280,6 +278,21 @@ parseElement (FILE *in, unsigned char la)
           return 0;
 
         json_t *r = new_json_t (JSON_T_STRING);
+        r->strval = strval;
+        return r;
+      }
+
+    // clang-format off
+    case '0': case '1': case '2': case '3': case '4':
+    case '5': case '6': case '7': case '8': case '9':
+    case '-':
+      // clang-format on
+      {
+        char *strval = parseNumber (in, la);
+        if (!strval)
+          return 0;
+
+        json_t *r = new_json_t (JSON_T_NUMBER);
         r->strval = strval;
         return r;
       }
@@ -435,10 +448,12 @@ parseString (FILE *in)
               if (la >= '\x20') // TODO is this actually correct?
                 {
                   buf[pos++] = la;
-                } else {
-                    fprintf(stderr, "illegal character in string\n");
-                    free(buf);
-                    return 0;
+                }
+              else
+                {
+                  fprintf (stderr, "illegal character in string literal\n");
+                  free (buf);
+                  return 0;
                 }
             }
           }
@@ -453,6 +468,38 @@ parseNumber (FILE *in, unsigned char la)
   int size = BUFSIZ, pos = 0;
   char *buf = malloc (size);
 
-    // TODO implement
-    return 0;
+  if (la == '-')
+    {
+      buf[pos++] = la;
+      la = fgetc (in);
+    }
+
+  if (la == '0')
+    {
+      buf[pos++] = la;
+    }
+  else
+    {
+      switch (la)
+        {
+        // clang-format off
+        case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+          // clang-format on
+          {
+            buf[pos++] = la;
+          }
+          break;
+        default:
+          {
+            fprintf (stderr, "illegal character in number literal\n");
+            free (buf);
+            return 0;
+          }
+        }
+    }
+  // TODO use labels/gotos?
+
+  // TODO implement
+  return 0;
 }

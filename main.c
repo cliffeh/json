@@ -37,11 +37,16 @@ main (int argc, const char *argv[])
     }
 
   // rc = yyparse (&j);
-  j = json_t_parse(stdin);
-  if (rc == 0)
+  j = json_t_parse (stdin);
+  if (j)
     {
       json_t_print (j, &print_options);
       free_json_t (j);
+      rc = 0;
+    }
+  else
+    {
+      rc = 1;
     }
 
   poptFreeContext (optCon);
