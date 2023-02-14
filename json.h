@@ -39,6 +39,8 @@ typedef struct json_t_print_options
   int indent, use_tabs;
 } json_t_print_options;
 
+json_t *json_t_parse (FILE *in);
+
 int json_t_print (const json_t *j, const json_t_print_options *opt);
 json_t *new_json_t (int type);
 void free_json_t (json_t *j);

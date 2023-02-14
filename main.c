@@ -36,7 +36,8 @@ main (int argc, const char *argv[])
       print_options.indent = 0;
     }
 
-  rc = yyparse (&j);
+  // rc = yyparse (&j);
+  j = json_t_parse(stdin);
   if (rc == 0)
     {
       json_t_print (j, &print_options);
