@@ -48,7 +48,7 @@
   BEGIN INITIAL;
   return('"');
 }
-<STRING>([^\\\"\x0-\x19]|\\([\"\\/bfnrt]|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]))* {
+<STRING>([^\\\"\x0-\x19]|\\([\"\\/bfnrt]|u[0-9a-fA-F]{4}))* {
   return(CHARACTERS);
 }
 
