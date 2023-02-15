@@ -3,10 +3,13 @@ json
 
 # generated sources
 parser.c
+parser.h
 scanner.c
-y.tab.h
 
 # testing logs
+test-suite.log
+test/*.log
+test/*.trs
 test/data/*.log
 test/data/*.err
 test/data/*.out
@@ -67,3 +70,33 @@ dkms.conf
 
 # IDE configs
 .vscode/
+
+# autotools generated files
+.deps/
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+compile
+config.guess
+config.h
+config.h.in
+config.h.in~
+config.log
+config.status
+config.sub
+configure
+configure~
+depcomp
+install-sh
+libtool
+ltmain.sh
+m4/
+missing
+stamp-h1
+test-driver
+ylwrap
+
+# dist directories/archives
+json-*.tar.gz
+json-*/

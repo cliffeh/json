@@ -1,6 +1,6 @@
 %{
 #include "json.h"
-#include "y.tab.h"
+#include "parser.h"
 
 /*
   from https://gist.github.com/justjkk/436828/:
