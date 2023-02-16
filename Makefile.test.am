@@ -1,3 +1,8 @@
+# TODO add test/run-memcheck.sh
+# TODO protect run-memcheck.sh against valgrind not being installed
+# TODO make valgrind tests take less time?
+
+# this is being included in the main Makefile.am
 check_SCRIPTS = \
     test/jq_y_array_arraysWithSpaces.json.test \
     test/jq_y_array_empty-string.json.test \
