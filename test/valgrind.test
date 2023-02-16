@@ -1,5 +1,11 @@
 #!/bin/bash
 
+which valgrind >& /dev/null || { echo "can't find valgrind; skipping test..."; exit 77; }
+
+INFILE=y_code.google.com_archive_p_json-test-suite.json
+
+valgrind --error-exitcode=2 --leak-check=full --log-file="$INFILE.valgrind.log" ./json < "$INFILE" > /dev/null 2>&1 
+
 DIR=$(dirname "$0")
 DATADIR="$DIR/data"
 CMD="$DIR/../json"

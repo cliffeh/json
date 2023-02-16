@@ -382,4 +382,5 @@ check_SCRIPTS = \
     test/y_structure_string_empty.json.test \
     test/y_structure_trailing_newline.json.test \
     test/y_structure_true_in_array.json.test \
-    test/y_structure_whitespace_array.json.test
+    test/y_structure_whitespace_array.json.test \
+    test/valgrind.test
