@@ -4,6 +4,5 @@
 * warnings for things like duplicate object keys?
 * make yyparse reentrant
 * better error handling/messages
-* enable running tests separately (e.g., accept vs reject vs pretty)
 * generate a library (libjson?)
 * test that printing returns the correct number of bytes printed?
