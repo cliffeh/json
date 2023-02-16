@@ -13,3 +13,5 @@ AM_YFLAGS = -d
 TESTS = test/run-tests.sh
 
 EXTRA_DIST = LICENSE README.md TODO.md VERSION
+
+CLEANFILES = $(BUILT_SOURCES) parser.h
