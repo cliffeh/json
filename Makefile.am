@@ -11,11 +11,9 @@ AM_YFLAGS = -d
 # make tests moar fasterer; concurrency of 10 is (probably) not too aggressive
 AM_MAKEFLAGS = -j10
 
-EXTRA_DIST = LICENSE README.md TODO.md VERSION $(check_SCRIPTS)
+EXTRA_DIST = LICENSE README.md TODO.md VERSION $(check_SCRIPTS) $(check_DATA)
 
 CLEANFILES = $(BUILT_SOURCES) parser.h
 
-# $(check_SCRIPTS) is set in Makefile.test.am
+# $(check_SCRIPTS) $(check_DATA) $(TESTS) are set in Makefile.test.am
 include Makefile.test.am
-TESTS = $(check_SCRIPTS)
-
