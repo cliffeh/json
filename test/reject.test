@@ -2,4 +2,4 @@
 
 INFILE=${0%.test}
 
-./json < $INFILE || exit 0
+./json < "$INFILE" || exit 0
