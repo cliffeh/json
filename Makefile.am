@@ -6,7 +6,7 @@ BUILT_SOURCES = parser.c parser.h scanner.c scanner.h
 scanner.h: scanner.c
 
 AM_LFLAGS = -oscanner.c --header-file=scanner.h
-AM_YFLAGS = -d
+AM_YFLAGS = -d -Wno-yacc
 
 # make tests moar fasterer; concurrency of 10 is (probably) not too aggressive
 AM_MAKEFLAGS = -j10
