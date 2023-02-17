@@ -1,7 +1,10 @@
 #include "json.h"
 #include <popt.h>
 
-int yyparse (json_t **j);
+#define YYSTYPE JSONSTYPE
+
+#include "parser.h"
+#include "scanner.h"
 
 int
 main (int argc, const char *argv[])
@@ -36,7 +39,9 @@ main (int argc, const char *argv[])
       print_options.indent = 0;
     }
 
-  rc = yyparse (&j);
+  yyscan_t scanner;
+
+  rc = jsonparse (&j, scanner);
   if (rc == 0)
     {
       json_t_print (j, &print_options);

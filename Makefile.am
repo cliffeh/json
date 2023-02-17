@@ -1,8 +1,11 @@
 bin_PROGRAMS = json
 json_SOURCES = json.c json.h main.c parser.y scanner.l
 
-BUILT_SOURCES = parser.c scanner.c
+BUILT_SOURCES = parser.c scanner.c scanner.h
 
+scanner.h: scanner.c
+
+AM_LFLAGS = -oscanner.c --header-file=scanner.h
 AM_YFLAGS = -d
 
 # make tests moar fasterer; concurrency of 10 is (probably) not too aggressive

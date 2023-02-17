@@ -1,6 +1,29 @@
+/* much of the boilerplate/lex directives taken from:
+   https://begriffs.com/posts/2021-11-28-practical-parsing.html#using-a-parser-as-a-library */
+
+/* disable unused functions so we don't
+   get compiler warnings about them */
+
+%option noyywrap nounput noinput
+%option noyyalloc noyyrealloc noyyfree
+
+/* change our prefix from yy to json */
+
+%option prefix="json"
+
+/* use the pure parser calling convention */
+
+%option reentrant bison-bridge
+
 %{
 #include "json.h"
 #include "parser.h"
+
+#define YY_EXIT_FAILURE ((void)yyscanner, EXIT_FAILURE)
+
+/* seems like a bug that I have to do this, since flex
+   should know prefix=json and match bison's JSONSTYPE */
+#define YYSTYPE JSONSTYPE
 
 /*
   from https://gist.github.com/justjkk/436828/:

@@ -5,6 +5,7 @@ json
 parser.c
 parser.h
 scanner.c
+scanner.h
 
 # testing logs
 test-suite.log
