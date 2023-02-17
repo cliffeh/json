@@ -2,6 +2,6 @@
 
 which valgrind >& /dev/null || { echo "can't find valgrind; skipping test..."; exit 77; }
 
-INFILE=test/y_code.google.com_archive_p_json-test-suite.json
+INFILE="$srcdir/test/y_code.google.com_archive_p_json-test-suite.json"
 
 valgrind --error-exitcode=2 --leak-check=full --log-file=valgrind.log ./json < "$INFILE"

@@ -1,7 +1,7 @@
 bin_PROGRAMS = json
-json_SOURCES = json.c json.h main.c parser.y scanner.h scanner.l
+json_SOURCES = json.c json.h main.c parser.h parser.y scanner.h scanner.l
 
-BUILT_SOURCES = parser.c scanner.c scanner.h
+BUILT_SOURCES = parser.c parser.h scanner.c scanner.h
 
 scanner.h: scanner.c
 
@@ -13,7 +13,7 @@ AM_MAKEFLAGS = -j10
 
 EXTRA_DIST = LICENSE README.md TODO.md VERSION $(check_SCRIPTS) $(check_DATA)
 
-CLEANFILES = $(BUILT_SOURCES) parser.h
+CLEANFILES = $(BUILT_SOURCES) valgrind.log
 
 # $(check_SCRIPTS) $(check_DATA) $(TESTS) are set in Makefile.test.am
 include Makefile.test.am
