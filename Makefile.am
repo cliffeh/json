@@ -1,5 +1,5 @@
 bin_PROGRAMS = json
-json_SOURCES = json.c json.h main.c parser.y scanner.l
+json_SOURCES = json.c json.h main.c parser.y scanner.h scanner.l
 
 BUILT_SOURCES = parser.c scanner.c scanner.h
 
