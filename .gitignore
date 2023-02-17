@@ -9,6 +9,7 @@ scanner.h
 
 # testing logs
 test-suite.log
+valgrind.log
 test/*.log
 test/*.trs
 
