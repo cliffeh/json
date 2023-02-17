@@ -13,6 +13,7 @@ main (int argc, const char *argv[])
   json_t_print_options print_options
       = { .out = DEFAULT_JSON_T_PRINT_OUTFILE,
           .indent = DEFAULT_JSON_T_PRINT_INDENT };
+  yyscan_t scanner;
   int rc = 0;
 
   poptContext optCon;
@@ -39,7 +40,8 @@ main (int argc, const char *argv[])
       print_options.indent = 0;
     }
 
-  yyscan_t scanner;
+  if ((rc = jsonlex_init (&scanner)) != 0)
+    exit (rc);
 
   rc = jsonparse (&j, scanner);
   if (rc == 0)
@@ -48,6 +50,7 @@ main (int argc, const char *argv[])
       free_json_t (j);
     }
 
+  jsonlex_destroy (scanner);
   poptFreeContext (optCon);
   return (rc);
 }

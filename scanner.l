@@ -5,7 +5,6 @@
    get compiler warnings about them */
 
 %option noyywrap nounput noinput
-%option noyyalloc noyyrealloc noyyfree
 
 /* change our prefix from yy to json */
 
@@ -59,6 +58,7 @@
 "null"  { return(NUL);  }
 
 -?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][-+]?[0-9]+)? {
+  yylval->sval = strdup(yytext);
   return(NUMBER);
 }
 
@@ -72,6 +72,7 @@
   return('"');
 }
 <STRING>([^\\\"\x0-\x19]|\\([\"\\/bfnrt]|u[0-9a-fA-F]{4}))* {
+  yylval->sval = strdup(yytext);
   return(CHARACTERS);
 }
 
