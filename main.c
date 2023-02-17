@@ -1,7 +1,10 @@
 #include "json.h"
 #include <popt.h>
 
-int yyparse (json_t **j);
+#define YYSTYPE JSONSTYPE
+
+#include "parser.h"
+#include "scanner.h"
 
 int
 main (int argc, const char *argv[])
@@ -10,6 +13,7 @@ main (int argc, const char *argv[])
   json_t_print_options print_options
       = { .out = DEFAULT_JSON_T_PRINT_OUTFILE,
           .indent = DEFAULT_JSON_T_PRINT_INDENT };
+  yyscan_t scanner;
   int rc = 0;
 
   poptContext optCon;
@@ -36,13 +40,17 @@ main (int argc, const char *argv[])
       print_options.indent = 0;
     }
 
-  rc = yyparse (&j);
+  if ((rc = jsonlex_init (&scanner)) != 0)
+    exit (rc);
+
+  rc = jsonparse (&j, scanner);
   if (rc == 0)
     {
       json_t_print (j, &print_options);
       free_json_t (j);
     }
 
+  jsonlex_destroy (scanner);
   poptFreeContext (optCon);
   return (rc);
 }
