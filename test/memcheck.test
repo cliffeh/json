@@ -1,7 +1,37 @@
 #!/bin/bash
 
-which valgrind >& /dev/null || { echo "can't find valgrind; skipping test..."; exit 77; }
+DIR=$(dirname "$0")
+CMD="$DIR/../json"
 
-INFILE="$srcdir/test/y_code.google.com_archive_p_json-test-suite.json"
+color_red="$(tput setaf 1)"
+color_green="$(tput setaf 2)"
+color_cyan="$(tput setaf 6)"
+color_reset="$(tput sgr0)"
 
-valgrind --error-exitcode=2 --leak-check=full --log-file=valgrind.log ./json < "$INFILE"
+which valgrind >&/dev/null || {
+  echo "MEMCHECK: ${color_cyan}SKIP${color_reset}"
+  exit 0
+}
+
+CMD="valgrind --error-exitcode=3 --leak-check=full"
+
+failed_tests=""
+while [[ -n $1 ]]; do
+  test="$1"
+  filename=$(basename "$test")
+  if ${CMD} --log-file="$DIR/$filename.valgrind.log" ./json <"$test" >"$DIR/$filename.memcheck.log" 2>"$DIR/$filename.memcheck.err"; then
+    echo "MEMCHECK: $test: ${color_green}PASS${color_reset}"
+  else
+    failed_tests="$failed_tests $test"
+  fi
+  shift
+done
+
+# spit out failed tests at the end
+for test in $failed_tests; do
+  echo "MEMCHECK: $test: ${color_red}FAIL${color_reset}"
+done
+
+if [[ -n "$failed_tests" ]]; then
+  exit 1
+fi
