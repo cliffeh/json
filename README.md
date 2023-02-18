@@ -8,15 +8,9 @@ I stumbled across [JSONTestSuite](https://github.com/nst/JSONTestSuite) and figu
 * libpopt (for parsing command line options)
 
 ## Building
-If you've checked this out from source control, you'll need to do:
+`make`
 
-    ./autogen.sh
-
-Once you've done that (or if you're working with a distribution package/tarball), it's good ol':
-
-    ./configure && make
-
-That should be it!
+(You might also want to take a look at `make help` for other build targets.)
 
 ## Running
 After you've built it, try this:
@@ -29,8 +23,6 @@ Feel free to pipe in your json of choice.
 A full suite of tests can be run by doing:
 
     make check
-
-(*Note:* at time of writing - 2022-02-15 - this may not quite work correctly).
 
 ## Caveats/Errata
 * String processing in a UTF-n world is a goddam nightmare, and I am almost *certain* there are bugs in the approach I've taken (test coverage notwithstanding). I tried the approach listed [here](https://www.w3.org/2005/03/23-lex-U). It's close...but the regexes as-provided don't quite meet all needs. I've also tested unicode processing using [every Unicode code point](https://github.com/bits/UTF-8-Unicode-Test-Documents). The test passed...but the file is huge so I'm not including it here. Feel free to give it a whirl if you're so inclined.
