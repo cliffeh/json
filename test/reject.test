@@ -1,5 +1,31 @@
-#!/bin/sh
+#!/bin/bash
 
-INFILE=${0%.test}
+DIR=$(dirname "$0")
+CMD="$DIR/../json"
 
-./json < "$INFILE" || exit 0
+color_red="$(tput setaf 1)"
+color_green="$(tput setaf 2)"
+color_reset="$(tput sgr0)"
+
+failed_tests=""
+while [[ -n $1 ]]; do
+  test="$1"
+  filename=$(basename "$test")
+  ${CMD} <"$test" >"$DIR/$filename.log" 2>"$DIR/$filename.err"
+  # 1 = failed to parse, 2 = ran out of memory
+  if [[ $? -eq 1 || $? -eq 2 ]]; then
+    echo "REJECT: $test: ${color_green}PASS${color_reset}"
+  else
+    failed_tests="$failed_tests $test"
+  fi
+  shift
+done
+
+# spit out failed tests at the end
+for test in $failed_tests; do
+  echo "REJECT: $test: ${color_red}FAIL${color_reset}"
+done
+
+if [[ -n "$failed_tests" ]]; then
+  exit 1
+fi

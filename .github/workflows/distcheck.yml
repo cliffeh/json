@@ -16,13 +16,8 @@ jobs:
     # TODO get rid of this step once the popt dep has been removed
     - name: prep
       run: sudo apt -y install libpopt-dev
-    - name: autogen
-      run: ./autogen.sh
-    - name: configure
-      run: ./configure
     - name: make
       run: make
     - name: make check
       run: make check
-    - name: make distcheck
-      run: make distcheck
+    # TODO add make distcheck once implemented
