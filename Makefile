@@ -37,7 +37,9 @@ realclean: clean ## clean up generated binaries and sources, log files, etc.
 .PHONY:realclean
 
 help: ## show this help
-	@echo "\nSpecify a command. The choices are:\n"
+	@echo
+	@echo "Specify a command. The choices are:"
+	@echo
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[0;36m%-12s\033[m %s\n", $$1, $$2}'
 	@echo ""
 .PHONY: help
