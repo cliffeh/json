@@ -12,3 +12,5 @@ libpopt_a_SOURCES = \
   system.h
 
 AM_CPPFLAGS = -DPOPT_SYSCONFDIR="\"$(sysconfdir)\""
+
+EXTRA_DIST  = popt.pdf README.popt

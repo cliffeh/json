@@ -11,6 +11,9 @@ make
 
 `autogen.sh` is provided for convenience in case you need to re-generate the configure script. This should only be necessary if you're mucking about with autotools internals - e.g., modifying `configure.ac` or `Makefile.am`.
 
+## Caveats
+While this comes with the trappings of autotools - a `configure` script and so forth - they only seem to work "standalone". i.e., I have yet to figure out the "secret sauce" for getting it to actually build as a subdirectory/subproject of an autotools project.
+
 ## Motivations
 [popt](https://github.com/rpm-software-management/popt) is an excellent argument parsing library - full-featured, battle-hardened (it's been around for decades now), etc. It is also widely-available at this point..._but_:
 
