@@ -56,3 +56,6 @@ popt/libpopt.a: popt/Makefile
 
 popt/Makefile: popt/configure
 	cd popt && ./configure
+
+popt/configure: popt/autogen.sh
+	cd popt && ./autogen.sh
