@@ -5,7 +5,7 @@ an [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259) compliant JSON parser
 I stumbled across [JSONTestSuite](https://github.com/nst/JSONTestSuite) and figured "Hell, I think I can do that." ...and I (mostly) have. So, if you're interested in a JSON parser using good ol' lex/yacc/C with good JSONTestSuite test coverage, then read on.
 
 ## Dependencies
-* libpopt (for parsing command line options)
+This project should have no external dependencies. (It uses popt for arg parsing, which has been packaged alongside it.)
 
 ## Building
 `make`

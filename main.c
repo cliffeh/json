@@ -1,5 +1,5 @@
 #include "json.h"
-#include <popt.h>
+#include "popt/popt.h"
 
 #define YYSTYPE JSONSTYPE
 

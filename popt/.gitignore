@@ -1,0 +1,28 @@
+# autotools-generated files
+aclocal.m4
+autom4te.cache/
+config.h
+config.h.in
+config.h.in~
+config.log
+config.status
+configure~
+.deps/
+Makefile
+Makefile.in
+stamp-h1
+
+# generated objects files
+lookup3.o
+popt.o
+poptconfig.o
+popthelp.o
+poptint.o
+poptparse.o
+
+# generated library
+libpopt.a
+
+# distribution files
+popt-*/
+popt-*.tar.gz

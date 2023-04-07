@@ -1,5 +1,6 @@
 BINARY=json
 OBJECTS=json.o main.o parser.o scanner.o
+LIBRARIES=popt/libpopt.a
 CSOURCES=json.c json.h main.c
 GENERATED_SOURCES=parser.c scanner.c
 GENERATED_HEADERS=parser.h scanner.h
@@ -10,10 +11,8 @@ LFLAGS=--header-file=scanner.h
 YACC=bison
 # default yacc rule expects to `mv y.tab.c parser.c`
 YFLAGS=-o y.tab.c --header=parser.h
-# TODO remove popt dependency
-LDFLAGS=-lpopt
 
-json: $(OBJECTS) ## generate the json binary (default)
+json: $(OBJECTS) $(LIBRARIES) ## generate the json binary (default)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 allcheck: check memcheck ## run all tests
@@ -30,10 +29,12 @@ memcheck: $(BINARY) ## test for memory leaks (requires valgrind)
 
 clean: ## clean up intermediate object files
 	rm -f $(OBJECTS)
+	make -C popt clean
 .PHONY: clean
 
 realclean: clean ## clean up generated binaries and sources, log files, etc.
 	rm -f $(BINARY) $(GENERATED_SOURCES) $(GENERATED_HEADERS) test/*.log test/*.err
+	make -C popt distclean
 .PHONY:realclean
 
 help: ## show this help
@@ -49,3 +50,9 @@ main.o: main.c parser.h scanner.h
 parser.h: parser.c
 
 scanner.h: scanner.c
+
+popt/libpopt.a: popt/Makefile
+	make -C popt libpopt.a
+
+popt/Makefile: popt/configure
+	cd popt && ./configure
